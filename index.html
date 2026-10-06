@@ -113,9 +113,9 @@ body{min-height:100vh}
   .sidebar{position:fixed;left:0;top:68px;bottom:0;height:auto;min-height:0;transform:none;box-shadow:6px 0 18px rgba(0,0,0,.18)}
   .sidebar.collapsed{width:0;flex-basis:0;transform:none;box-shadow:none;background:transparent!important;border-right:0;overflow:visible}
   .sidebar.collapsed .sidebar-title{display:none}
-  .sidebar.collapsed .sidebar-nav,.sidebar.collapsed .sidebar-footer{display:none}
-  .sidebar.collapsed .sidebar-header{position:fixed;left:16px;top:84px;width:54px;height:54px;justify-content:center;padding:0;border:0;background:transparent;z-index:1000}
-  .sidebar.collapsed .sidebar-toggle{display:flex;width:54px;height:54px;background:var(--sidebar-hover)!important;border-radius:14px!important;box-shadow:0 4px 12px rgba(0,0,0,.22);font-size:27px}
+  .sidebar.collapsed .sidebar-nav,.sidebar.collapsed .sidebar-footer,.sidebar.collapsed .sidebar-user-row{display:none}
+  .sidebar.collapsed .sidebar-header{display:none}
+  .sidebar.collapsed .sidebar-toggle{display:none}
   .sidebar-overlay{display:block}
 }
 .sidebar-overlay{display:none}
@@ -125,6 +125,7 @@ body{min-height:100vh}
   .app-content{display:block}
 }
 
+@media(max-width:650px){.player-filter-section,.player-sort-section{padding:11px 12px}.player-filter-section .filterbar{grid-template-columns:1fr 1fr;gap:9px}.player-sortbar{display:grid;grid-template-columns:1fr 1fr;gap:8px}.player-sortbar button{width:100%;min-height:42px}.player-list-meta{margin-top:9px}.player-list-meta .filter-reset{margin:0;height:42px}.player-table-wrap{margin-top:4px;border:1px solid var(--line);background:#fff}.player-table-wrap .player-table{min-width:820px}}
 @media(max-width:650px){header{height:auto;min-height:72px;padding:9px 12px;align-items:flex-start}.header-logo{width:42px;height:42px}.header-brand{flex:1;min-width:0}.header-title{min-width:0}header h1{font-size:18px}header small{display:block;margin-top:3px}.teambar{justify-content:flex-end}.teambar select{min-width:140px}.version-link{display:none}}
 
 @media print{
@@ -418,6 +419,86 @@ body.dark-mode #loginGate{background:#171c19}.dark-mode .login-card{background:#
 .header-user{font-size:12px;color:#fff;max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;padding-left:12px}
 @media(max-width:760px){.header-user{max-width:170px;font-size:11px;color:#fff}}
 
+/* STEP 94 – Mobile iPhone Entwurf */
+.mobile-menu-toggle{display:none}
+@media(max-width:760px){
+  :root{--mobile-pad:12px}
+  html,body{width:100%;max-width:100%;overflow-x:hidden}
+  body{padding-bottom:env(safe-area-inset-bottom)}
+  header{position:sticky;top:0;z-index:100;height:auto;min-height:64px;padding:8px var(--mobile-pad);gap:9px;align-items:center;flex-wrap:wrap;box-shadow:0 2px 10px rgba(0,0,0,.12)}
+  .mobile-menu-toggle{display:flex;align-items:center;justify-content:center;flex:0 0 42px;width:42px;height:42px;border:0;border-radius:10px;background:#424a4e;color:#fff;font-size:22px;padding:0}
+  .header-brand{flex:1;min-width:0;gap:9px}
+  .header-logo{width:38px;height:38px;border-radius:6px}
+  header h1{font-size:15px;line-height:1.1}
+  header small{font-size:17px;line-height:1.1;margin-top:2px}
+  .teambar{order:3;width:100%;display:flex;align-items:center;gap:8px}
+  .teambar select{width:100%;min-width:0;height:42px;font-size:16px;padding:8px 10px}
+  .header-user{display:none}
+  .app-shell{min-height:calc(100dvh - 64px)}
+  .sidebar{top:64px;width:min(310px,86vw);max-width:86vw;z-index:90;padding-bottom:env(safe-area-inset-bottom)}
+  .sidebar.collapsed{width:0;max-width:0}
+  .sidebar-overlay{z-index:80;background:rgba(0,0,0,.34)}
+  .sidebar:not(.collapsed)+.sidebar-overlay{display:block;position:fixed;inset:64px 0 0 0}
+  .sidebar-nav button{min-height:48px;height:48px;font-size:16px}
+  .sidebar-footer button{height:44px}
+  .sidebar-user-row .sidebar-user-button{min-height:46px;height:46px}
+  main{max-width:none!important;margin:0!important;padding:12px var(--mobile-pad) 24px!important}
+  #appFooter{display:none}
+  .card{border-radius:12px;padding:14px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+  .page-head{gap:10px!important}
+  .page-head h2,.card h2{font-size:20px;line-height:1.2}
+  .actions{display:grid;grid-template-columns:1fr;gap:8px}
+  .actions button,.page-head .actions button{width:100%;min-height:44px}
+  button{min-height:44px}
+  input,select,textarea{font-size:16px;min-height:44px}
+  textarea{min-height:110px}
+  .formgrid{grid-template-columns:1fr!important;gap:10px}
+  .attendance-list{grid-template-columns:1fr!important;gap:4px}
+  .attendance-row{min-height:44px;padding:7px 8px}
+  .attendance-row input[type="checkbox"]{width:22px;height:22px;flex:0 0 22px}
+  .attendance-summary{align-items:stretch}
+  .attendance-summary-actions{display:grid;grid-template-columns:1fr 1fr;width:100%;gap:8px}
+  .attendance-summary-actions button{min-height:44px}
+  .table-wrap{margin:0 -2px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{font-size:14px;min-width:640px}
+  th,td{padding:9px 8px}
+  .mini-kpi-grid{grid-template-columns:1fr 1fr!important;gap:8px;margin:12px 0}
+  .mini-kpi{padding:10px 11px;border-radius:10px}
+  .mini-kpi-value{font-size:20px}
+  .mini-kpi-sub{font-size:10px}
+  .training-sortbar{display:grid;grid-template-columns:1fr;gap:8px}
+  .training-sortbar>div{width:100%}
+  .training-sortbar select{min-width:0;width:100%}
+  .dashboard-shell{gap:12px}
+  .dashboard-hero{padding:16px;border-radius:12px;display:block}
+  .dashboard-hero h2{font-size:21px}
+  .dashboard-hero .dashboard-hero-actions{display:grid;grid-template-columns:1fr 1fr;margin-top:12px}
+  .dashboard-hero .dashboard-hero-actions button{width:100%;min-height:44px}
+  .dashboard-grid{grid-template-columns:1fr 1fr!important;grid-auto-rows:auto!important;gap:8px}
+  .dashboard-widget.w1,.dashboard-widget.w2,.dashboard-widget.w4{grid-column:span 1}
+  .dashboard-widget.w2{grid-column:span 2}
+  .dashboard-widget.w4{grid-column:span 2}
+  .dashboard-widget.h1,.dashboard-widget.h2{grid-row:span 1}
+  .dashboard-widget{padding:12px;min-height:92px;border-radius:10px}
+  .dashboard-metric{padding:12px}
+  .dashboard-metric .value{font-size:23px}
+  .training-exercise-card,.training-exercise-summary,.training-exercise-list{width:100%;max-width:100%}
+  .training-exercise-card{padding:12px!important}
+  .exercise-actions{display:grid!important;grid-template-columns:1fr 1fr;gap:8px!important}
+  .exercise-actions button{min-height:44px}
+  .board-toolbar{display:grid;grid-template-columns:1fr;gap:8px}
+  .board-toolbar .tool-group{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+  .board-toolbar button{width:100%;min-height:44px}
+}
+@media(max-width:380px){
+  .mini-kpi-grid,.dashboard-grid{grid-template-columns:1fr!important}
+  .dashboard-widget.w2,.dashboard-widget.w4{grid-column:span 1}
+  .dashboard-hero .dashboard-hero-actions{grid-template-columns:1fr}
+  .attendance-summary-actions{grid-template-columns:1fr}
+}
+@media(min-width:761px){.mobile-menu-toggle{display:none!important}}
+
+
 /* Step 94 V6 – iPhone 13 mini Feinschliff */
 @media (max-width: 760px){
   /* Teams: Karten exakt so breit wie die aktive Mannschaft-Infobox */
@@ -494,7 +575,7 @@ body.dark-mode #loginGate{background:#171c19}.dark-mode .login-card{background:#
 </form>
 </div>
 <div aria-live="polite" id="setupToast" role="status"></div>
-<header><div class="header-brand"><img alt="Vereinslogo" class="header-logo" id="headerLogo" src="TSV_Logo.jpg"/><div class="header-title"><h1 id="appTitle">Handball-Manager</h1><small id="teamHeader">Team</small></div></div><div class="teambar"><select id="teamSelect" onchange="switchTeam(this.value)"></select><div class="header-user" id="headerUser" title="Angemeldeter Benutzer"></div></div></header>
+<header><button aria-label="Menü öffnen" class="mobile-menu-toggle" id="mobileMenuToggle" type="button">☰</button><div class="header-brand"><img alt="Vereinslogo" class="header-logo" id="headerLogo" src="TSV_Logo.jpg"/><div class="header-title"><h1 id="appTitle">Handball-Manager</h1><small id="teamHeader">Team</small></div></div><div class="teambar"><select id="teamSelect" onchange="switchTeam(this.value)"></select><div class="header-user" id="headerUser" title="Angemeldeter Benutzer"></div></div></header>
 <div class="app-shell" id="appShell" style="visibility:hidden">
 <aside aria-label="Hauptnavigation" class="sidebar" id="sidebar">
 <div class="sidebar-header"><div class="sidebar-title">Navigation</div><button aria-label="Navigation ein-/ausblenden" class="sidebar-toggle" id="sidebarToggle" title="Navigation ein-/ausblenden" type="button">‹</button></div>
@@ -758,7 +839,7 @@ const SIDEBAR_KEY="tsv_nettelkamp_sidebar_collapsed_v54";
 function nav(){document.getElementById("nav").innerHTML=sections.map(([id,t,icon])=>`<button type="button" class="${current===id?'active':''}" data-page="${id}" title="${t}"><span class="sidebar-icon" aria-hidden="true">${icon}</span><span class="sidebar-label">${t}</span></button>`).join("")}
 function setSidebarCollapsed(collapsed){const el=document.getElementById("sidebar");if(!el)return;el.classList.toggle("collapsed",collapsed);localStorage.setItem(SIDEBAR_KEY,collapsed?"1":"0");const btn=document.getElementById("sidebarToggle");if(btn){btn.textContent=collapsed?"☰":"‹";btn.title=collapsed?"Navigation einblenden":"Navigation ausblenden";btn.setAttribute("aria-label",btn.title)}}
 function toggleSidebar(){const el=document.getElementById("sidebar");setSidebarCollapsed(!el.classList.contains("collapsed"))}
-function initSidebar(){const saved=localStorage.getItem(SIDEBAR_KEY);setSidebarCollapsed(saved==="1");document.getElementById("sidebarToggle")?.addEventListener("click",toggleSidebar);document.getElementById("sidebarOverlay")?.addEventListener("click",()=>setSidebarCollapsed(true))}
+function initSidebar(){const saved=localStorage.getItem(SIDEBAR_KEY);setSidebarCollapsed(window.innerWidth<=760?true:saved==="1");document.getElementById("sidebarToggle")?.addEventListener("click",toggleSidebar);document.getElementById("sidebarOverlay")?.addEventListener("click",()=>setSidebarCollapsed(true));document.getElementById("mobileMenuToggle")?.addEventListener("click",toggleSidebar);window.addEventListener("resize",()=>{if(window.innerWidth<=760)setSidebarCollapsed(true)})}
 function noActiveTeamPage(){
  const app=document.getElementById("app");
  if(!app)return;
