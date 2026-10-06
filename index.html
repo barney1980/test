@@ -498,6 +498,45 @@ body.dark-mode #loginGate{background:#171c19}.dark-mode .login-card{background:#
 .sidebar-user-button:hover{background:var(--sidebar-hover)!important;color:#fff!important}
 .header-user{font-size:12px;color:#fff;max-width:280px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:right;padding-left:12px}
 @media(max-width:760px){.header-user{max-width:170px;font-size:11px;color:#fff}}
+
+/* STEP 94 V5 – iPhone 13 mini Feinschliff */
+@media(max-width:760px){
+  /* Karten auf kleinen iPhones etwas schmaler und zentriert */
+  .card{width:calc(100% - 10px);margin-left:auto;margin-right:auto;box-sizing:border-box}
+
+  /* Teams: Kopfbereich und Aktionsbuttons harmonisch nebeneinander */
+  .teams-head{display:block;text-align:center}
+  .teams-head>div:first-child{text-align:center}
+  .teams-head .actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px!important}
+  .teams-head .actions button{width:100%;min-width:0}
+  .teams-grid{padding:0!important}
+  .team-card{width:94%;margin-left:auto;margin-right:auto}
+
+  /* Trainingsfilter: alle Eingabefelder exakt gleiche Höhe und ohne Überlauf */
+  .training-filterbar{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:9px!important;align-items:end}
+  .training-filterbar>div{min-width:0!important}
+  .training-filterbar label{margin-bottom:5px}
+  .training-filterbar input,
+  .training-filterbar input[type=date],
+  .training-filterbar select{width:100%!important;min-width:0!important;height:44px!important;min-height:44px!important;box-sizing:border-box!important;padding:8px 10px!important}
+  .training-filterbar input[type=date]{-webkit-appearance:none;appearance:none}
+  .training-filterbar .filter-reset{width:100%;min-height:44px;height:44px;margin:0!important;grid-column:1}
+
+  /* Filter zurücksetzen + Sortierung als gemeinsame Abschlusszeile */
+  .training-sortbar{display:grid!important;grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important;gap:9px!important;align-items:end;margin:10px 0 8px!important}
+  .training-sortbar>div{display:block!important;min-width:0}
+  .training-sortbar .sort-label{display:block;font-size:14px!important;margin-bottom:5px;white-space:nowrap}
+  .training-sortbar select{width:100%!important;min-width:0!important;height:44px!important;min-height:44px!important;box-sizing:border-box!important}
+  .training-sortbar .muted{align-self:center;font-size:14px;line-height:1.25}
+
+  /* Trainingsziele/Fokus wächst automatisch mit dem Inhalt */
+  .training-focus{height:auto!important;min-height:110px;max-height:none!important;overflow:hidden!important;box-sizing:border-box;resize:none}
+
+  /* Anwesenheitsliste auf dem iPhone in zwei Spalten */
+  .attendance-list{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:5px 10px!important}
+  .attendance-row{min-width:0;min-height:44px;padding:7px 5px!important}
+  .attendance-row .player-name{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+}
 </style>
 </head>
 <body>
@@ -1105,8 +1144,8 @@ function training(){
       <div class="mini-kpi"><div class="mini-kpi-label">Letztes Training</div><div class="mini-kpi-value mini-kpi-date">${latestLabel}</div><div class="mini-kpi-sub">${latest?esc(latest.topic||"Ohne Schwerpunkt"):"Noch kein Training"}</div></div>
       <div class="mini-kpi"><div class="mini-kpi-label">Nächstes Training</div><div class="mini-kpi-value mini-kpi-date">${nextLabel}</div><div class="mini-kpi-sub">${upcoming?esc(upcoming.topic||"Ohne Schwerpunkt"):"Noch nicht geplant"}</div></div>
     </div>
-    <div class="filterbar training-filterbar"><div><label>Suche</label><input value="${esc(trainingFilter.text)}" oninput="trainingFilter.text=this.value;training()" placeholder="Schwerpunkt suchen"></div><div><label>Von</label><input type="date" value="${trainingFilter.from}" onchange="trainingFilter.from=this.value;training()"></div><div><label>Bis</label><input type="date" value="${trainingFilter.to}" onchange="trainingFilter.to=this.value;training()"></div><div><label>Schwerpunkt</label><select onchange="trainingTopicFilter=this.value;training()"><option value="">Alle Schwerpunkte</option>${topics.map(x=>`<option value="${esc(x)}" ${trainingTopicFilter===x?"selected":""}>${esc(x)}</option>`).join("")}</select></div><button class="filter-reset" onclick="resetTrainingFilters()">Filter zurücksetzen</button></div>
-    <div class="training-sortbar"><div><span class="sort-label">Sortierung</span><select onchange="setTrainingSort(this.value)"><option value="desc" ${trainingSort==="desc"?"selected":""}>Neueste zuerst</option><option value="asc" ${trainingSort==="asc"?"selected":""}>Älteste zuerst</option></select></div><span class="muted">${source.length} Training${source.length===1?"":"seinheiten"} · ${sortLabel}</span></div>
+    <div class="filterbar training-filterbar"><div><label>Suche</label><input value="${esc(trainingFilter.text)}" oninput="trainingFilter.text=this.value;training()" placeholder="Schwerpunkt suchen"></div><div><label>Von</label><input type="date" value="${trainingFilter.from}" onchange="trainingFilter.from=this.value;training()"></div><div><label>Bis</label><input type="date" value="${trainingFilter.to}" onchange="trainingFilter.to=this.value;training()"></div><div><label>Schwerpunkt</label><select onchange="trainingTopicFilter=this.value;training()"><option value="">Alle Schwerpunkte</option>${topics.map(x=>`<option value="${esc(x)}" ${trainingTopicFilter===x?"selected":""}>${esc(x)}</option>`).join("")}</select></div></div>
+    <div class="training-sortbar"><button class="filter-reset" onclick="resetTrainingFilters()">Filter zurücksetzen</button><div><span class="sort-label">Sortierung</span><select onchange="setTrainingSort(this.value)"><option value="desc" ${trainingSort==="desc"?"selected":""}>Neueste zuerst</option><option value="asc" ${trainingSort==="asc"?"selected":""}>Älteste zuerst</option></select></div><span class="muted">${source.length} Training${source.length===1?"":"seinheiten"} · ${sortLabel}</span></div>
     ${rows?`<div class="table-wrap"><table class="training-table"><thead><tr><th>Datum</th><th>Schwerpunkt</th><th>Themenblock</th><th class="training-attendance">Anwesenheit</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`:`<div class="empty training-empty">Keine Trainingseinheiten entsprechen den Filtern.</div>`}
   </div>`;
 }
@@ -1318,6 +1357,11 @@ if ("serviceWorker" in navigator) {
 </body></html>`);
   w.document.close();
 }
+function autoResizeTrainingFocus(el){
+  if(!el)return;
+  el.style.height="auto";
+  el.style.height=Math.max(110,el.scrollHeight)+"px";
+}
 function trainingForm(t){
   let checks=teamPlayers().map(p=>`<label class="attendance-row"><input type="checkbox" value="${p.id}" ${t?.present?.includes(p.id)?"checked":""}> <span class="player-name ${p.gender==="weiblich"?"female":"male"}">${esc(p.name)}</span></label>`).join("");
   window.trainingExercisesDraft=JSON.parse(JSON.stringify(t?.exercises||[]));
@@ -1326,11 +1370,13 @@ function trainingForm(t){
   let topicOptions=topics.map(x=>`<option value="${esc(x)}" ${t?.topic===x?"selected":""}>${esc(x)}</option>`).join("");
   let blockOptions=blocks.map(x=>`<option value="${x.id}" ${t?.blockId===x.id?"selected":""}>${esc(x.name)}</option>`).join("");
   document.getElementById("app").innerHTML=`<div class="card"><div class="page-head" style="margin-bottom:6px"><div><h2>${t?"Training bearbeiten":"Training anlegen"}</h2><div class="muted">${t?`Trainingseinheit vom ${formatDateDE(t.date)} · ${esc(t.topic||"Ohne Schwerpunkt")}`:"Neue Trainingseinheit für die aktive Mannschaft"}</div></div><span class="badge">${esc(activeTeam().name)} · ${esc(season||"–")}</span></div><div class="notice">Schwerpunkt und Themenblock werden aus dem Allgemeinen Setup übernommen.</div><div class="formgrid"><div><label>Datum <span class="muted">(dd.mm.yyyy)</span></label><input id="td" type="date" value="${t?.date||new Date().toISOString().slice(0,10)}" onchange="renumberTrainingExercises(this.value);renderTrainingExercises()"></div><div><label>Saison</label><select id="ts"><option value="">– bitte auswählen –</option>${db.settings.seasons.map(x=>`<option value="${esc(x)}" ${(t?.season||activeTeam().season)===x?"selected":""}>${esc(x)}</option>`).join("")}</select></div><div><label>Schwerpunkt</label><select id="tt"><option value="">– bitte auswählen –</option>${topicOptions}</select></div><div><label>Themenblock</label><select id="tb"><option value="">– keiner –</option>${blockOptions}</select></div></div>
-<div style="margin-top:12px"><label>Trainingsziele / Fokus</label><textarea id="tn" class="training-focus" rows="3" placeholder="Trainingsziele, zentrale Lerninhalte, Coaching-Fokus ...">${esc(t?.notes||"")}</textarea></div>
+<div style="margin-top:12px"><label>Trainingsziele / Fokus</label><textarea id="tn" class="training-focus" rows="3" oninput="autoResizeTrainingFocus(this)" placeholder="Trainingsziele, zentrale Lerninhalte, Coaching-Fokus ...">${esc(t?.notes||"")}</textarea></div>
 <h3 style="margin-top:20px">Anwesenheit</h3><div id="attendanceSummary" class="attendance-summary"><div class="attendance-summary-main"><strong id="attendanceCount">0 / 0</strong><span id="attendancePercent">0 % anwesend</span></div><div class="attendance-summary-actions"><button type="button" onclick="setTrainingAttendance(true)">Alle anwesend</button><button type="button" onclick="setTrainingAttendance(false)">Alle abwesend</button></div></div><div id="trainingAttendanceList" class="attendance-list">${checks||"<span>Keine Spieler angelegt.</span>"}</div>
 <div style="margin-top:20px"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><div><h3 style="margin:0 0 4px">Übungen</h3><div class="muted">Übungen werden nach dem Speichern kompakt angezeigt und können nur über „Bearbeiten“ geöffnet werden.</div></div><button type="button" class="primary" onclick="addTrainingExercise()">+ Übung</button></div><div id="trainingExerciseEditor"></div><div id="trainingExerciseSummary" class="training-exercise-summary"></div><div id="trainingExerciseList" class="training-exercise-list"></div></div>
 <div class="actions"><button class="primary" onclick="saveTraining('${t?.id||""}')">Training speichern</button><button type="button" onclick="${t?`printTrainingPlanPDF('${t.id}')`:`alert("Bitte das Training zuerst speichern, um die Trainingsplanung als PDF zu exportieren.")`}">Trainingsplanung als PDF</button><button onclick="navigateTo('training')">Zurück</button>${t?`<button type="button" onclick="deleteTraining('${t.id}')">Training löschen</button>`:""}${t?(()=>{let n=trainingNeighbors(t.id);return `<button onclick="openTrainingNeighbor('${n.prev?n.prev.id:""}')" ${n.prev?"":"disabled"}>← Vorherige Trainingseinheit</button><button onclick="openTrainingNeighbor('${n.next?n.next.id:""}')" ${n.next?"":"disabled"}>Nächste Trainingseinheit →</button>`})():""}</div></div>`;
   renderTrainingExercises();
+  const focus=document.getElementById("tn");
+  if(focus) autoResizeTrainingFocus(focus);
   updateTrainingAttendanceSummary();
 }
 function updateTrainingAttendanceSummary(){
