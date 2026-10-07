@@ -629,6 +629,41 @@ body.dark-mode #loginGate{background:#171c19}.dark-mode .login-card{background:#
   }
 }
 
+
+/* Step 94 V10 – iPhone 13 mini: robuste Feldgrößen */
+@media (max-width:760px){
+  .training-filterbar > div,
+  .training-filterbar input[type="date"],
+  .training-filterbar select,
+  .card .formgrid > div,
+  .card .formgrid input[type="date"],
+  .card .formgrid select{
+    min-width:0!important;
+    max-width:100%!important;
+    box-sizing:border-box!important;
+  }
+  .training-filterbar input[type="date"],
+  .training-filterbar select,
+  .card .formgrid input[type="date"],
+  .card .formgrid select{
+    display:block!important;
+    width:100%!important;
+    height:48px!important;
+    min-height:48px!important;
+    max-height:48px!important;
+  }
+  .training-filterbar input[type="date"],
+  .card .formgrid input[type="date"]{
+    background:#eee!important;
+    border:1px solid var(--line)!important;
+    border-radius:8px!important;
+    padding:10px 12px!important;
+    font-size:16px!important;
+    line-height:1.2!important;
+    box-sizing:border-box!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -920,7 +955,8 @@ function noActiveTeamPage(){
    <div class="actions" style="margin-top:18px"><button class="primary" onclick="navigateTo('teams')">+ Mannschaft anlegen</button><button onclick="navigateTo('setup')">Setup öffnen</button></div>
  </div>`;
 }
-function navigateTo(id){const pages={dashboard,players,teams:manageTeams,training,development,statistics,birthdays,planning,notes,exercises,setup};if(!Object.prototype.hasOwnProperty.call(pages,id)||typeof pages[id]!=="function"){console.error("Unbekannte Seite:",id);return;}if(hasUnsavedChanges){const leave=confirm("Es gibt ungespeicherte Änderungen.\n\nOK = Seite verlassen ohne zu speichern\nAbbrechen = auf dieser Seite bleiben");if(!leave)return;hasUnsavedChanges=false;}current=id;updateTeamHeader();nav();if(id!=="dashboard"&&id!=="teams"&&id!=="setup"&&!activeTeam()){noActiveTeamPage();return;}pages[id]()}
+function navigateTo(id){const pages={dashboard,players,teams:manageTeams,training,development,statistics,birthdays,planning,notes,exercises,setup};if(!Object.prototype.hasOwnProperty.call(pages,id)||typeof pages[id]!=="function"){console.error("Unbekannte Seite:",id);return;}if(hasUnsavedChanges){const leave=confirm("Es gibt ungespeicherte Änderungen.\n\nOK = Seite verlassen ohne zu speichern\nAbbrechen = auf dieser Seite bleiben");if(!leave)return;hasUnsavedChanges=false;}current=id;updateTeamHeader();nav();if(id!=="dashboard"&&id!=="teams"&&id!=="setup"&&!activeTeam()){noActiveTeamPage();return;}pages[id]();scrollPageTop()}
+function scrollPageTop(){requestAnimationFrame(()=>window.scrollTo({top:0,left:0,behavior:"auto"}));}
 function show(id){navigateTo(id)}
 document.addEventListener("click",function(e){const b=e.target.closest("#nav button[data-page]");if(b){e.preventDefault();navigateTo(b.dataset.page);if(window.innerWidth<=760)setSidebarCollapsed(true);}});
 function formatDateDE(value){
@@ -1134,6 +1170,7 @@ ${obs.length?obs.map(o=>`<div style="padding:9px 0;border-bottom:1px solid var(-
 requestAnimationFrame(()=>window.scrollTo({top:0,left:0,behavior:"auto"}));
 }
 function playerForm(p){
+scrollPageTop();
 document.getElementById("app").innerHTML=`<div class="card"><h2>${p?"Spieler bearbeiten":"Spieler anlegen"}</h2>
 <div class="formgrid">
 <div><label>Name</label><input id="pn" value="${esc(p?.name||"")}"></div>
@@ -1240,6 +1277,8 @@ function training(){
     <div class="training-sortbar"><div><span class="sort-label">Sortierung</span><select onchange="setTrainingSort(this.value)"><option value="desc" ${trainingSort==="desc"?"selected":""}>Neueste zuerst</option><option value="asc" ${trainingSort==="asc"?"selected":""}>Älteste zuerst</option></select></div><span class="muted">${source.length} Training${source.length===1?"":"seinheiten"} · ${sortLabel}</span></div>
     ${rows?`<div class="table-wrap"><table class="training-table"><thead><tr><th>Datum</th><th>Schwerpunkt</th><th>Themenblock</th><th class="training-attendance">Anwesenheit</th><th></th></tr></thead><tbody>${rows}</tbody></table></div>`:`<div class="empty training-empty">Keine Trainingseinheiten entsprechen den Filtern.</div>`}
   </div>`;
+  window.normalizeMobileTrainingFields?.();
+  requestAnimationFrame(()=>window.normalizeMobileTrainingFields?.());
 }
 
 function newTraining(){trainingForm(null)}
@@ -1378,6 +1417,7 @@ if ("serviceWorker" in navigator) {
   w.document.close();
 }
 function trainingForm(t){
+scrollPageTop();
   let checks=teamPlayers().map(p=>`<label class="attendance-row"><input type="checkbox" value="${p.id}" ${t?.present?.includes(p.id)?"checked":""}> <span class="player-name ${p.gender==="weiblich"?"female":"male"}">${esc(p.name)}</span></label>`).join("");
   window.trainingExercisesDraft=JSON.parse(JSON.stringify(t?.exercises||[]));
   window.trainingExerciseEditorId=null;
@@ -1396,6 +1436,8 @@ function trainingForm(t){
     autoResizeTrainingFocus();
   }
   updateTrainingAttendanceSummary();
+  window.normalizeMobileTrainingFields?.();
+  requestAnimationFrame(()=>window.normalizeMobileTrainingFields?.());
 }
 function autoResizeTrainingFocus(){
   const el=document.getElementById("tn");
@@ -1979,6 +2021,7 @@ function newExercise(){exerciseForm(null)}
 function editExercise(id){exerciseForm(db.exercises.find(e=>e.id===id))}
 function deleteExercise(id){if(!confirm("Übung wirklich löschen?"))return;db.exercises=db.exercises.filter(e=>e.id!==id);save();showSuccessToast("Übung wurde erfolgreich gelöscht.");exercises()}
 function exerciseForm(ex){
+scrollPageTop();
  let e=ex||{id:crypto.randomUUID(),name:"",category:"",code:nextExerciseCode(),notes:"",images:[],imageWidth:420,imageHeight:280,board:{enabled:false,mode:"half",objects:[]}};
  if(!e.code)e.code=nextExerciseCode();
  window.exerciseImages=JSON.parse(JSON.stringify(e.images||[]));
@@ -2657,6 +2700,25 @@ window.addEventListener("beforeunload",e=>{if(hasUnsavedChanges){e.preventDefaul
     }).observe(app,{childList:true,subtree:true});
   }
   window.addEventListener("load",resizeTrainingFocus);
+})();
+</script>
+<script>
+(function(){
+  window.normalizeMobileTrainingFields=function(){
+    if(window.innerWidth>760)return;
+    document.querySelectorAll('#app input[type="date"]').forEach(function(el){
+      el.style.width="100%";
+      el.style.minWidth="0";
+      el.style.maxWidth="100%";
+      el.style.height="48px";
+      el.style.minHeight="48px";
+      el.style.maxHeight="48px";
+      el.style.boxSizing="border-box";
+      el.style.backgroundColor="#eee";
+    });
+  };
+  window.addEventListener("resize",function(){window.normalizeMobileTrainingFields();});
+  window.addEventListener("load",function(){window.normalizeMobileTrainingFields();});
 })();
 </script>
 </body>
