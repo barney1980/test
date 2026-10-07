@@ -509,6 +509,20 @@ body.dark-mode #loginGate{background:#171c19}.dark-mode .login-card{background:#
     margin-left:0;
     margin-right:0;
   }
+
+  /* Teams: Aktionen kompakt nebeneinander */
+  .teams-head .actions{
+    width:100%;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:8px;
+    margin-top:10px!important;
+  }
+  .teams-head .actions button{
+    width:100%;
+    min-width:0;
+    margin:0;
+  }
   .team-card{
     width:100%;
     max-width:none;
@@ -534,12 +548,18 @@ body.dark-mode #loginGate{background:#171c19}.dark-mode .login-card{background:#
   input[type="date"],
   .training-overview-card .training-filterbar input[type="date"],
   .training-overview-card .formgrid input[type="date"]{
-    width:100%;
-    min-width:0;
-    height:48px;
-    min-height:48px;
-    padding:10px 12px;
+    width:100%!important;
+    min-width:0!important;
+    max-width:100%!important;
+    height:48px!important;
+    min-height:48px!important;
+    padding:10px 12px!important;
     box-sizing:border-box;
+    border:1px solid var(--line);
+    border-radius:8px;
+    background:#fff;
+    font-size:16px;
+    line-height:1.2;
   }
   .training-overview-card .training-filterbar select{
     height:48px;
@@ -553,11 +573,37 @@ body.dark-mode #loginGate{background:#171c19}.dark-mode .login-card{background:#
   }
   .card .formgrid input[type="date"],
   .card .formgrid select{
+    width:100%!important;
+    height:48px!important;
+    min-height:48px!important;
+    max-width:100%!important;
+  }
+
+  /* Training: Fokusfeld wächst automatisch mit dem gesamten Text */
+  .training-focus{
+    min-height:72px!important;
+    max-height:none!important;
+    height:auto;
+    overflow:hidden!important;
+    resize:none;
+    box-sizing:border-box;
     width:100%;
-    height:48px;
-    min-height:48px;
+    line-height:1.35;
+  }
+
+  /* Training: Anwesenheit auf dem iPhone in zwei Spalten */
+  .attendance-list{
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+    gap:6px 10px!important;
+    width:100%;
+  }
+  .attendance-row{
+    min-height:44px;
+    padding:7px 6px;
+    box-sizing:border-box;
   }
 }
+
 </style>
 </head>
 <body>
@@ -1319,7 +1365,18 @@ function trainingForm(t){
 <div style="margin-top:20px"><div style="display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap"><div><h3 style="margin:0 0 4px">Übungen</h3><div class="muted">Übungen werden nach dem Speichern kompakt angezeigt und können nur über „Bearbeiten“ geöffnet werden.</div></div><button type="button" class="primary" onclick="addTrainingExercise()">+ Übung</button></div><div id="trainingExerciseEditor"></div><div id="trainingExerciseSummary" class="training-exercise-summary"></div><div id="trainingExerciseList" class="training-exercise-list"></div></div>
 <div class="actions"><button class="primary" onclick="saveTraining('${t?.id||""}')">Training speichern</button><button type="button" onclick="${t?`printTrainingPlanPDF('${t.id}')`:`alert("Bitte das Training zuerst speichern, um die Trainingsplanung als PDF zu exportieren.")`}">Trainingsplanung als PDF</button><button onclick="navigateTo('training')">Zurück</button>${t?`<button type="button" onclick="deleteTraining('${t.id}')">Training löschen</button>`:""}${t?(()=>{let n=trainingNeighbors(t.id);return `<button onclick="openTrainingNeighbor('${n.prev?n.prev.id:""}')" ${n.prev?"":"disabled"}>← Vorherige Trainingseinheit</button><button onclick="openTrainingNeighbor('${n.next?n.next.id:""}')" ${n.next?"":"disabled"}>Nächste Trainingseinheit →</button>`})():""}</div></div>`;
   renderTrainingExercises();
+  const focus=document.getElementById("tn");
+  if(focus){
+    focus.addEventListener("input",autoResizeTrainingFocus);
+    autoResizeTrainingFocus();
+  }
   updateTrainingAttendanceSummary();
+}
+function autoResizeTrainingFocus(){
+  const el=document.getElementById("tn");
+  if(!el)return;
+  el.style.height="auto";
+  el.style.height=Math.max(el.scrollHeight,72)+"px";
 }
 function updateTrainingAttendanceSummary(){
   const boxes=[...document.querySelectorAll('#trainingAttendanceList input[type="checkbox"]')];
