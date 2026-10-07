@@ -779,7 +779,7 @@ body.dark-mode #loginGate{background:#171c19}.dark-mode .login-card{background:#
 }
 
 
-/* V13 – Mobile Optimierung Übungen + Statistik */
+/* V14 – Mobile Bewertungsstufen + Statistik */
 @media(max-width:520px){
   /* Übungskarten: 1. Zeile = ID + Name + Dauer, 2. Zeile = Aktionen */
   .training-exercise-card{
@@ -832,13 +832,42 @@ body.dark-mode #loginGate{background:#171c19}.dark-mode .login-card{background:#
     white-space:nowrap;
   }
 
-  /* Statistik: beide Auswertungen untereinander */
-  .stats-summary-grid{
-    grid-template-columns:1fr !important;
-    gap:14px !important;
+  /* Bewertungsstufen: 5 Buttons gleichmäßig über die komplette Breite */
+  .rating-buttons{
+    display:grid !important;
+    grid-template-columns:repeat(5,minmax(0,1fr)) !important;
+    gap:8px !important;
+    width:100% !important;
+    align-items:stretch !important;
   }
-  .stats-summary-grid .card{
-    width:100%;
+  .rating-btn{
+    width:100% !important;
+    min-width:0 !important;
+    height:48px !important;
+    min-height:48px !important;
+    padding:0 !important;
+    font-size:17px !important;
+    box-sizing:border-box !important;
+  }
+  .rating-label{
+    grid-column:1 / -1 !important;
+    min-width:0 !important;
+    margin:0 !important;
+    padding:2px 0 0 !important;
+    text-align:left !important;
+  }
+
+  /* Statistik: beide Auswertungen untereinander und jeweils volle Breite */
+  .stats-summary-grid{
+    display:grid !important;
+    grid-template-columns:minmax(0,1fr) !important;
+    gap:14px !important;
+    width:100% !important;
+  }
+  .stats-summary-grid > section{
+    width:100% !important;
+    min-width:0 !important;
+    box-sizing:border-box !important;
   }
 }
 </style>
