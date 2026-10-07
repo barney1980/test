@@ -1374,27 +1374,6 @@ if ("serviceWorker" in navigator) {
   });
 }
 <\/script>
-
-<script>
-(function(){
-  function resizeTrainingFocus(){
-    var el=document.getElementById("tn");
-    if(!el) return;
-    el.style.height="auto";
-    el.style.height=Math.max(el.scrollHeight,72)+"px";
-  }
-  document.addEventListener("input",function(e){
-    if(e.target && e.target.id==="tn") resizeTrainingFocus();
-  });
-  var app=document.getElementById("app");
-  if(app){
-    new MutationObserver(function(){
-      requestAnimationFrame(resizeTrainingFocus);
-    }).observe(app,{childList:true,subtree:true});
-  }
-  window.addEventListener("load",resizeTrainingFocus);
-})();
-</script>
 </body></html>`);
   w.document.close();
 }
@@ -2659,6 +2638,26 @@ document.addEventListener("input",e=>{if(e.target.matches("input,textarea,select
 document.addEventListener("change",e=>{if(e.target.matches("input,textarea,select")&&!e.target.closest(".filterbar")&&e.target.id!=="teamSelect"&&!e.target.closest("#loginForm"))markUnsaved();if(e.target.matches("#trainingAttendanceList input[type=\"checkbox\"]"))updateTrainingAttendanceSummary();});
 window.addEventListener("beforeunload",e=>{if(hasUnsavedChanges){e.preventDefault();e.returnValue="";}});
 // Die erste Seite wird erst nach erfolgreicher Supabase-Anmeldung geöffnet.
+</script>
+<script>
+(function(){
+  function resizeTrainingFocus(){
+    var el=document.getElementById("tn");
+    if(!el) return;
+    el.style.height="auto";
+    el.style.height=Math.max(el.scrollHeight,72)+"px";
+  }
+  document.addEventListener("input",function(e){
+    if(e.target && e.target.id==="tn") resizeTrainingFocus();
+  });
+  var app=document.getElementById("app");
+  if(app){
+    new MutationObserver(function(){
+      requestAnimationFrame(resizeTrainingFocus);
+    }).observe(app,{childList:true,subtree:true});
+  }
+  window.addEventListener("load",resizeTrainingFocus);
+})();
 </script>
 </body>
 </html>
